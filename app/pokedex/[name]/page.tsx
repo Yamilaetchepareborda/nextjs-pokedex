@@ -3,7 +3,7 @@ import { getPokemon } from "@/app/lib/pokeapi";
 import StatsBar from "@/app/components/stats-bar";
 
 type PokemonPageProps = {
-    params: { name: string };
+    params: Promise<{ name: string }>;
 };
 
 type PokemonType = {
@@ -16,7 +16,8 @@ type PokemonStat = {
 };
 
 export default async function PokemonPage({ params }: PokemonPageProps) {
-    const pokemon = await getPokemon(params.name);
+    const { name } = await params;
+    const pokemon = await getPokemon(name);
 
     return (
         <main className="max-w-2xl mx-auto p-6 space-y-4">
