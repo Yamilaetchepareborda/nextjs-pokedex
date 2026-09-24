@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mini Pokédex
 
-## Getting Started
+A first-generation Pokédex built with **Next.js (App Router)** that fetches data from the public [PokéAPI](https://pokeapi.co/) using React Server Components.
 
-First, run the development server:
+> 🇦🇷 Pokédex de la primera generación hecha con Next.js, TypeScript y Tailwind, consumiendo la PokéAPI.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Live demo:** _coming soon (Vercel)_
+
+![Pokédex list](docs/pokedex-list.png)
+![Pokémon detail](docs/pokemon-detail.png)
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org/) (App Router, Server Components)
+- React 19 + TypeScript
+- Tailwind CSS 4
+- ESLint
+
+## Features
+
+- Paginated list of the first 151 Pokémon (20 per page), with the page kept in the URL (`/pokedex?page=2`)
+- Detail page per Pokémon (`/pokedex/[name]`) with sprite, types, height, weight and base stats rendered as bars
+- Search by name that goes straight to the detail page
+- Data fetched on the server with `fetch` and cached with `revalidate: 60`
+- Route-level `loading.tsx` and `error.tsx` states
+- Fallback image when an artwork sprite is missing
+
+## Project structure
+
+```
+app/
+├── lib/pokeapi.ts          # Typed PokéAPI client (list + detail)
+├── components/             # Card, search, pagination, stats bar
+├── pokedex/page.tsx        # List page (server component)
+└── pokedex/[name]/page.tsx # Detail page (server component)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Getting started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Requires Node.js 20+.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Open http://localhost:3000. No environment variables are needed.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run build   # production build
+npm start       # serve the production build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What I learned
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Splitting a page into **server components** for data fetching and small **client components** (`"use client"`) only where interactivity is needed (search, pagination).
+- Using the URL (`searchParams`) as the source of truth for pagination state instead of local state.
+- Handling async route `params` in Next.js 16 and adding `loading` / `error` boundaries per route.
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT](LICENSE)
